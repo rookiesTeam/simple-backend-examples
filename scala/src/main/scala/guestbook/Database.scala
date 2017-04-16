@@ -3,6 +3,7 @@ package guestbook
 import slick.jdbc.SQLiteProfile.api._
 
 // http://slick.lightbend.com/doc/3.2.0/
+// http://slick.lightbend.com/doc/3.2.0/queries.html
 object GuestCommentDAO {
   
   val db: Database = Database.forURL("jdbc:sqlite:database/db.sqlite", driver = "org.sqlite.JDBC") // Database connection
@@ -10,15 +11,15 @@ object GuestCommentDAO {
 
   def create = db.run(DBIO.seq(guestComments.schema.create))
 
-  def totalGuestComments = guestComments.length
+  def totalGuestComments = db.run(guestComments.length.result)
 
   def insert(g: String, c: String) = db.run(DBIO.seq(guestComments += (-1, g, c)))
   
   def get = db.run(guestComments.result)
-
-  def get(id: Int) = for(gc <- guestComments if gc.id === id) yield (gc.id, gc.guest, gc.comment)
-
-  def getFrom(from: Int) = for(gc <- guestComments if gc.id > from) yield (gc.id, gc.guest, gc.comment)
+  
+  def get(id: Int) = db.run(guestComments.filter(_.id === id).map(gc => (gc.id, gc.guest, gc.comment)).result.head)
+  
+  def getFrom(from: Int) = db.run(guestComments.filter(_.id > from).map(gc => (gc.id, gc.guest, gc.comment)).result)
   
 }
 
