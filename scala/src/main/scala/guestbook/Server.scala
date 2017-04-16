@@ -2,17 +2,12 @@ package guestbook
 
 import scalaz.concurrent.Task
 
+import org.http4s._
+import org.http4s.dsl._
 import org.http4s.server.blaze._
 import org.http4s.server.{Server, ServerApp}
 
-import org.http4s._
-//import org.http4s.circe._
-import org.http4s.dsl._
-
-/*import io.circe._
-import io.circe.generic.auto._
-import io.circe.syntax._*/
-
+import scala.util.{Success, Failure}
 
 // http://http4s.org/v0.15/service/
 object Boot extends ServerApp {
@@ -45,6 +40,9 @@ object Boot extends ServerApp {
 
 
 object GuestBookService {
+  
+  import java.io.File // To reference static files
+  import scala.concurrent.ExecutionContext.Implicits.global
 
   private object FromIDParam extends QueryParamDecoderMatcher[Int]("from")
 
@@ -56,8 +54,10 @@ object GuestBookService {
     case GET -> Root / "new" =>
       Ok("New elements")
 
-    case GET -> Root =>
-      Ok("Root")
+    case request @ GET -> Root =>
+      StaticFile.fromFile(new File("templates/index.html"), Some(request))
+        .map(Task.now)
+        .getOrElse(NotFound())  
 
     case POST -> Root =>
       Ok("POST on Root.")
