@@ -33,6 +33,7 @@ object Boot extends ServerApp {
     BlazeBuilder
       .bindHttp(port, host)
       .mountService(guestbookService, "/")
+      //.mountService(staticService, "/static")
       .start
 
   }
@@ -41,11 +42,14 @@ object Boot extends ServerApp {
 
 object GuestBookService {
   
-  import java.io.File // To reference static files
   import scala.concurrent.ExecutionContext.Implicits.global
 
   private object FromIDParam extends QueryParamDecoderMatcher[Int]("from")
 
+  // http://http4s.org/v0.15/static/
+  /*def static(file: String, request: Request) = 
+    StaticFile.fromResource(file, Some(request)).map(Task.now).getOrElse(NotFound())*/
+  
   val guestbookService = HttpService {
 
     case GET -> Root / "new" :? FromIDParam(id) =>
@@ -53,14 +57,24 @@ object GuestBookService {
 
     case GET -> Root / "new" =>
       Ok("New elements")
-
+      
+    // http://http4s.org/v0.15/static/
+    /*case request @ GET -> Root =>
+      static("/templates/index.html", request)*/
+      
     case request @ GET -> Root =>
-      StaticFile.fromFile(new File("templates/index.html"), Some(request))
-        .map(Task.now)
-        .getOrElse(NotFound())  
+      Ok("Root.")
 
-    case POST -> Root =>
+    case request @ POST -> Root =>
       Ok("POST on Root.")
 
   }
+  
+  /*val staticService = HttpService {
+    
+    // Serve static files
+    case request @ GET -> _ if List(".js", ".css", ".map", ".html", ".webm").exists(request.pathInfo.endsWith) =>
+      static(request.pathInfo, request)
+      
+  }*/
 }

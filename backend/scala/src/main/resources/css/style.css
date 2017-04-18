@@ -1,0 +1,28 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+footer p {
+  padding: 20px 0;
+  margin: 0;
+}
+
+#new-comment {
+  margin-bottom: 30px; 
+}
+
+#comment {
+  resize: none;
+}
+
+.page-header h3 {
+  color: #777;
+}
+
+.comments-background {
+  color: white;
+  background-color: #F04345;
+}

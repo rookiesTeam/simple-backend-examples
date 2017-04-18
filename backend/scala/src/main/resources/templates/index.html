@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Scala Guestbook</title>
+    <link rel="stylesheet" href="static/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="static/css/bootstrap.min.css.map" type="text/css">
+    <link rel="stylesheet" href="static/css/style.css" type="text/css">
+</head>
+<body>
+    <div class="jumbotron">
+        <div class="container">
+            <div class="page-header">
+                <h1>Scala Guestbook</h1>
+                <h3>with http4s and Slick</h3>
+            </div>
+            <p>Simple description here.</p>
+        </div>
+    </div>
+    <div id="content">
+        <div id="new-comment" class="container">
+            <h3>Share a comment with us:</h3>
+            <form action="/" method="post">
+                <div class="form-group">
+                    <input id="guest" type="text" class="form-control" placeholder="Name">
+                </div>
+                <div class="form-group">
+                    <textarea id="comment" class="form-control" rows="3" placeholder="Write the comment you want to share with us here"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Share comment!</button>
+            </form>
+        </div>
+        <div class="comments-background">
+            <div id="last-comments" class="container">
+                <h3><span id="total_comments">0</span> comments:</h3>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p class="container">© 2017 Rookies</p>
+    </footer>
+</body>
+</html>
