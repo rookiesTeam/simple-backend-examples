@@ -1,11 +1,12 @@
 import os
+import sys
 
 import peewee
 from peewee import CharField, TextField
 from peewee import Model
 from peewee import SqliteDatabase
 
-DATABASE = 'sample_tornado_guestbook/db/comments.db'
+DATABASE = 'db/comments.db'
 try:
     database = SqliteDatabase(DATABASE)
 except Exception as err:
@@ -26,9 +27,16 @@ class Comment(BaseModel):
             'username': self.username,
             'content': self.content
         }
+
 database.connect()
-database.drop_table(Comment)
-database.create_table(Comment)
+try:
+    database.drop_table(Comment)
+except Exception as err:
+    print("Table comments does not exits", file=sys.stderr)
+try:
+    database.create_table(Comment)
+except Exception as err:
+    print("Table comments already exits", file=sys.stderr)
 
 
 @database.atomic()
@@ -43,4 +51,4 @@ def get_comments(limit: int = None, offset: int = None) -> list(Comment):
         comments = comments.limit(limit)
     if offset:
         comments = comments.offset(offset)
-    return [comment.serialize for comment in comments]
+    return [comment.serialize() for comment in comments]

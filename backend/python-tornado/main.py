@@ -4,8 +4,8 @@ import sys
 import tornado.ioloop
 import tornado.web
 
-from sample_tornado_guestbook.db import create_comment
-from sample_tornado_guestbook.db import get_comments
+from db import create_comment
+from db import get_comments
 
 
 class MainHandler(tornado.web.RequestHandler):
