@@ -8,6 +8,7 @@ Dependencies
 ----
 This server has the following dependecies, source `requirements.txt`:
 - Python3 (>=3.5)
+- Virtualenv
 - Tornado
 - Peewee
 
@@ -30,4 +31,21 @@ $ source .venv/bin/activate
 $ python main.py
 ```
 
+Authors
+----
 
+- [Ismael Taboada][ismtabo]
+
+License
+----
+
+This project is licensed under the MIT License - see the [LICENSE][license] file for details
+
+Acknowledgments
+----
+
+- [RookiesTeam][rookies]
+
+[ismtabo]: https://github.com/ismtabo
+[license]: ./LICENSE
+[rookies]: https://github.com/rookiesTeam
