@@ -29,15 +29,24 @@ class Comment(BaseModel):
         }
 
 database.connect()
-try:
-    database.drop_table(Comment)
-except Exception as err:
-    print("Table comments does not exits", file=sys.stderr)
-try:
-    database.create_table(Comment)
-except Exception as err:
-    print("Table comments already exits", file=sys.stderr)
 
+def drop_database():
+    try:
+        database.drop_table(Comment)
+    except Exception as err:
+        print("Table comments does not exits", file=sys.stderr)
+
+def create_database():
+    try:
+        database.create_table(Comment)
+    except Exception as err:
+        print("Table comments already exits", file=sys.stderr)
+
+def reset_database():
+    drop_database()
+    create_database()
+
+create_database()
 
 @database.atomic()
 def create_comment(username: str, content: str) -> Comment:
@@ -45,10 +54,6 @@ def create_comment(username: str, content: str) -> Comment:
 
 
 @database.atomic()
-def get_comments(limit: int = None, offset: int = None) -> list(Comment):
-    comments = Comment.select()
-    if limit:
-        comments = comments.limit(limit)
-    if offset:
-        comments = comments.offset(offset)
+def get_comments(limit: int = -1, offset: int = 0) -> list(Comment):
+    comments = Comment.select().limit(limit).offset(offset)
     return [comment.serialize() for comment in comments]
